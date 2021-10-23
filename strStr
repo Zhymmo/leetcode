@@ -1,0 +1,52 @@
+int* Get_next(const char* pat, const unsigned int lpat)//获取next数组
+{
+	if (lpat == 0)
+		return NULL;
+	int* next = (int*)malloc( (sizeof(int))*lpat);//分配一个lpat大小的动态空间
+	if (next == NULL)
+		return 0;
+	int k = -1;//k表示当前next的值，next的值表示k前的前缀与等长度的后缀相同
+	next[0] = k;//next数组第一个赋值-1，可以看成与匹配串对齐时，与第一个字符前一个对齐
+	if (lpat == 1)
+		return next;
+	for (int j = 0; j <=lpat - 2; )
+	{
+		if (k == -1 || pat[j] == pat[k])
+		{
+			next[++j] = ++k ;
+		}
+		else
+		{
+			k = next[k];
+		}
+	}
+	return next;//返回next数组指针
+}
+int strStr(char * haystack, char * needle)
+{
+	const unsigned int lmat = strlen(haystack);
+	const unsigned int lpat = strlen(needle);
+	int *next=Get_next(needle, lpat);//得到next数组
+	//for (int i = 0; i < lpat; i++)
+	//{
+	//	printf("%d ", next[i]);
+	//}
+	//return 0;
+	int i = 0;
+	int j = 0;
+	while (j==-1||haystack[i] && needle[j])
+	{
+		if (j == -1 || haystack[i] == needle[j])
+		{
+			i++; j++;
+		}
+		else
+			j = next[j];
+	}
+	free(next);
+	next = NULL;
+	if (!haystack[i]&&needle[j])
+		return -1;
+	else
+		return i - j;
+}
