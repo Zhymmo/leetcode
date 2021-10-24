@@ -1,0 +1,41 @@
+#include<stdio.h>
+#include<malloc.h>
+char* countAndSay(int n) 
+{
+	if (n <= 0)
+		return NULL;
+	else if (n == 1)
+	{
+		char* one = (char*)malloc(2);
+		one[0] = '1';
+		one[1] = '\0';
+		return one;
+	}
+		
+	else
+	{
+		char* s = countAndSay(n - 1);
+		char* c = (char*)malloc(3);
+		int len = 0;
+		int x = 0;
+		int i = 0;
+		int j=0;
+		for (; s[len]; len++);
+		for ( i=0;i < len; i=j+1)
+		{
+			for (j = i; j + 1 < len && s[j] == s[j + 1]; j++);
+			if (x>0)
+				c = (char*)realloc(c, x + 3);
+			c[x] = j - i + 1 + '0';
+			x++;
+			c[x] = s[j];
+			x++;
+		}
+		c[x] = '\0';
+		return c;
+	}
+}
+int main()
+{
+	printf("%s",countAndSay(30));
+}
