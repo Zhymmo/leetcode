@@ -1,0 +1,42 @@
+#include<stdio.h>
+#include<malloc.h>
+struct ListNode {
+	int val;
+	struct ListNode* next;
+};
+void deleteNode(struct ListNode* node) {
+	struct ListNode* del = node->next;
+	node->val = del->val;
+	node->next = del->next;
+	free(del);
+	del = NULL;
+}
+void printNode(struct ListNode* L)
+{
+	while(L)
+	{
+		printf("%d", L->val);
+		L = L->next;
+	}
+}
+int main()
+{
+	struct ListNode* a = (struct ListNode*)malloc(sizeof(struct ListNode));
+	a->val = 4;
+	a->next = NULL;
+	struct ListNode* b = (struct ListNode*)malloc(sizeof(struct ListNode));
+	b->val = 5;
+	b->next = NULL;
+	struct ListNode* c = (struct ListNode*)malloc(sizeof(struct ListNode));
+	c->val = 1;
+	c->next = NULL;
+	struct ListNode* d = (struct ListNode*)malloc(sizeof(struct ListNode));
+	d->val = 9;
+	d->next = NULL;
+	a->next = b;
+	b->next = c;
+	c->next = d;
+	deleteNode(c);
+	printNode(a);
+	return 0;
+}
