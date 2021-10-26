@@ -1,0 +1,28 @@
+
+  struct ListNode {
+      int val;
+      struct ListNode *next;
+ };
+ 
+
+
+  struct ListNode* removeNthFromEnd(struct ListNode* head, int n) {
+	  struct ListNode* FindEnd = head;
+	  struct ListNode* nLater = head;
+	  struct ListNode* PrnLater = head;
+	  for (int i = 0; FindEnd; i++)
+	  {
+		  FindEnd = FindEnd->next;
+		  if (i >= n)
+		  {
+			  PrnLater = nLater;
+			  nLater = nLater->next;
+		  }
+	  }
+	  if (nLater == head)
+		  return head->next;
+	  PrnLater->next = nLater->next;
+	  free(nLater);
+	  nLater = NULL;
+	  return head;
+  }
