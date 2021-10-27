@@ -1,0 +1,31 @@
+
+ struct ListNode {
+     int val;
+     struct ListNode *next;
+ };
+ 
+
+
+struct ListNode* reverseList(struct ListNode* head) {
+	if (head == NULL)//无元素
+	{
+		return NULL;
+	}
+	struct ListNode* pre = head;
+	struct ListNode* link = pre->next;
+	if (link == NULL)//1个元素
+	{
+		return head;
+	}
+	struct ListNode* later = link->next;
+	head->next = NULL;
+	while (later)//两个及两个以上元素
+	{
+		link->next = pre;
+		pre = link;
+		link = later;
+		later = later->next;
+	}
+	link->next = pre;
+	return link;
+}
