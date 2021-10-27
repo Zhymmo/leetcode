@@ -1,0 +1,64 @@
+#include<stdio.h>
+#include<malloc.h>
+
+  struct ListNode {
+      int val;
+     struct ListNode *next;
+  };
+ 
+
+
+struct ListNode* mergeTwoLists(struct ListNode* l1, struct ListNode* l2) {
+	struct ListNode* L1 = l1;
+	struct ListNode* L2 = l2;
+	struct ListNode* prel1 = NULL;
+	struct ListNode* prel2 = NULL;
+	while (l1&& l2)
+	{
+		if (l1->val > l2->val)
+		{
+			if (prel1==NULL)
+			{
+				prel2 = l2;
+				l2 = l2->next;
+				prel2->next = l1;
+				prel1 = prel2;
+				L1 = prel2;
+			}
+			else
+			{
+				prel2 = l2;
+				l2 = l2->next;
+				prel1->next = prel2;
+				prel2->next = l1;
+				prel1 = prel2;
+			}
+		
+		}
+		else
+		{
+			prel1 = l1;
+			l1 = l1->next;
+		}
+	}
+	if (l2 != NULL)
+	{
+		if (prel1 == NULL)
+		{
+			return l2;
+		}
+		else
+		{
+			prel1->next = l2;
+		}
+	
+	}
+	return L1;
+}
+int main()
+{
+	struct ListNode a = { 2,NULL };
+	struct ListNode b = { 1,NULL };
+	mergeTwoLists(&a, &b);
+	return 0;
+}
