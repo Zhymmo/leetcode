@@ -1,0 +1,33 @@
+
+ struct ListNode {
+     int val;
+     struct ListNode *next;
+ };
+ 
+#include<stdbool.h>
+#include<stdio.h>
+ bool hasCycle(struct ListNode* head) {
+	 if (head == NULL)//无元素
+	 {
+		 return false;
+	 }
+	 struct ListNode* pre = head;
+	 struct ListNode* link = pre->next;
+	 if (link == NULL)//1个元素
+	 {
+		 return false;
+	 }
+	 struct ListNode* later = link->next;
+	 head->next = NULL;
+	 while (later)//两个及两个以上元素
+	 {
+		 link->next = pre;
+		 pre = link;
+		 link = later;
+		 later = later->next;
+	 }
+	 if (link == head)
+		 return true;
+	 else
+		 return false;
+ }
