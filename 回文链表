@@ -1,0 +1,83 @@
+//1.遍历链表，得到链表长度len（比较第一个和最后一个的值，若不同可以直接返回false）
+//2.逆序前len/2个链表，得到逆序后的表头reverse_head和reverse_head->next
+//3.循环比较两个长度为len/2的链表，表头分别为reverse_head和reverse_head->next
+//4.若循环中有不同，直接返回false，若循环正常结束，返回true
+//特殊值判断，若len<=1，直接返回false.接到1之后
+#include<stdio.h>
+#include<stdbool.h>
+ struct ListNode {
+    int val;
+    struct ListNode *next;
+ };
+bool isPalindrome(struct ListNode* head) {
+	int len = 0;
+	if (head == NULL)
+	{
+		return false;
+	}
+	struct ListNode* link1 = head;
+	struct ListNode* link2 = head;
+	while(link1->next)
+	{
+		link1 = link1->next;
+		len++;
+	}
+	len++;
+
+	if (len<=3)
+	{
+		if (len == 1)
+			return true;
+		else
+		{
+			if (head->val == link1->val)
+				return true;
+			else
+				return false;
+		}
+	}
+	int mark = 0;
+	if (len % 2)
+	{
+		mark = 1;
+	}
+	link1 = head;
+	link2 = link1->next;
+	struct ListNode* later = link2->next;
+	head->next = NULL;
+	int reverse_num = len / 2-1;//reverse_num>=1,len>=4
+	while (reverse_num--)//两个及两个以上元素
+	{
+		link2->next = link1;
+		link1 = link2;
+		link2 = later;
+		later = later->next;
+	}
+	if (mark == 0)
+	{
+		for (int i = len / 2; i > 0; i--)
+		{
+			if (link1->val != link2->val)
+				return false;
+			else
+			{
+				link1 = link1->next;
+				link2 = link2->next;
+			}
+		}
+	}
+	else
+	{
+		for (int i = len / 2; i > 0; i--)
+		{
+			if (link1->val != later->val)
+				return false;
+			else
+			{
+				link1 = link1->next;
+				later = later->next;
+			}
+		}
+	}
+	return true;
+}
