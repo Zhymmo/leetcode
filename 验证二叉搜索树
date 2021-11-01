@@ -1,0 +1,73 @@
+#include<stdio.h>
+#include<stdbool.h>
+struct TreeNode 
+{
+	int val;
+	struct TreeNode* left;
+	struct TreeNode* right;
+};
+typedef struct StackNode
+{
+	struct TreeNode* date;
+	struct StackNode* next;
+
+}StackNode, * LNode;
+void InitStack(LNode* Spp)
+{
+	*Spp = NULL;
+}
+void Push(LNode* Spp, struct TreeNode* e)
+{
+	LNode p = (LNode)malloc(sizeof(StackNode));
+	p->next = *Spp;
+	p->date = e;
+	*Spp = p;
+}
+struct TreeNode* Pop(StackNode** Spp)
+{
+	if (*Spp == NULL)
+		return NULL;
+	struct TreeNode* e = (*Spp)->date;
+	StackNode * p = *Spp;
+	(*Spp) = (*Spp)->next;
+	free(p);
+	p = NULL;
+	return e;
+}
+
+bool isValidBST(struct TreeNode* root)
+{
+	LNode* Spp = (LNode*)malloc(sizeof(LNode*));
+	InitStack(Spp);
+	if (root == NULL)
+		return true;
+	struct TreeNode* first = NULL;
+	int num = 0;
+	while (root || *Spp)
+	{
+		if (root)
+		{
+			Push(Spp, root);
+			root = root->left;
+
+		}
+		else
+		{
+			if (num == 0)
+			{
+				first = Pop(Spp);
+				num = 1;
+			}
+			else
+			{
+				struct TreeNode* last = Pop(Spp);
+				if (first->val >= last->val)
+					return false;
+				else
+					first = last;
+			}
+			root = first->right;
+		}
+	}
+	return true;
+}
